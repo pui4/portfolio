@@ -1,0 +1,152 @@
+[gd_scene load_steps=9 format=3 uid="uid://cirg7rcllbqxt"]
+
+[ext_resource type="Script" path="res://scripts/vpresence_area.gd" id="1_wqqgp"]
+[ext_resource type="Texture2D" uid="uid://d33jdutvxovte" path="res://img/vpresence cad.png" id="2_k87wa"]
+[ext_resource type="Texture2D" uid="uid://b8n1iy7lg280u" path="res://img/VPRESENCE P1.png" id="3_e7wa7"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_q6v4w"]
+size = Vector3(7, 2, 3)
+
+[sub_resource type="Animation" id="Animation_gptnu"]
+resource_name = "fade_in"
+length = 0.4
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.4),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_d5j63"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_s8674"]
+resource_name = "fade_out"
+length = 0.4
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.4),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_4sbos"]
+_data = {
+"RESET": SubResource("Animation_d5j63"),
+"fade_in": SubResource("Animation_gptnu"),
+"fade_out": SubResource("Animation_s8674")
+}
+
+[node name="Vpresence-area" type="Node3D"]
+script = ExtResource("1_wqqgp")
+
+[node name="Area3D" type="Area3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 0.5, 0)
+shape = SubResource("BoxShape3D_q6v4w")
+
+[node name="Panel" type="Panel" parent="."]
+modulate = Color(1, 1, 1, 0)
+anchors_preset = -1
+anchor_left = 0.325521
+anchor_top = 0.146605
+anchor_right = 0.674479
+anchor_bottom = 0.853395
+grow_horizontal = 2
+grow_vertical = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Panel"]
+libraries = {
+"": SubResource("AnimationLibrary_4sbos")
+}
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Panel"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = -0.00248756
+anchor_top = 0.0371179
+anchor_right = 0.997512
+anchor_bottom = 0.157205
+grow_horizontal = 2
+theme_override_font_sizes/normal_font_size = 36
+bbcode_enabled = true
+text = "[center]VPRESENCE"
+metadata/_edit_use_anchors_ = true
+
+[node name="TextureRect" type="TextureRect" parent="Panel"]
+layout_mode = 0
+anchor_left = 0.644279
+anchor_top = 0.631004
+anchor_right = 0.937811
+anchor_bottom = 0.947598
+texture = ExtResource("2_k87wa")
+expand_mode = 1
+stretch_mode = 4
+metadata/_edit_use_anchors_ = true
+
+[node name="TextureRect2" type="TextureRect" parent="Panel"]
+layout_mode = 0
+anchor_left = 0.0323383
+anchor_top = 0.30131
+anchor_right = 0.325871
+anchor_bottom = 0.617904
+texture = ExtResource("3_e7wa7")
+expand_mode = 1
+stretch_mode = 4
+metadata/_edit_use_anchors_ = true
+
+[node name="RichTextLabel2" type="RichTextLabel" parent="Panel"]
+layout_mode = 0
+anchor_left = 0.313433
+anchor_top = 0.305677
+anchor_right = 0.940298
+anchor_bottom = 0.617904
+text = "On the left you can see the drawing of what we wanted the prototype design to look like."
+metadata/_edit_use_anchors_ = true
+
+[node name="RichTextLabel3" type="RichTextLabel" parent="Panel"]
+layout_mode = 0
+anchor_left = 0.0298507
+anchor_top = 0.631004
+anchor_right = 0.616915
+anchor_bottom = 0.932314
+text = "On the right you can see the final cad model for the chasis for the prototype."
+metadata/_edit_use_anchors_ = true
+
+[node name="RichTextLabel4" type="RichTextLabel" parent="Panel"]
+layout_mode = 0
+anchor_left = 0.0223881
+anchor_top = 0.131004
+anchor_right = 0.975124
+anchor_bottom = 0.28821
+text = "VPRESENCE is a project me and a couple friends worked on for a competion. It alows you to be somewhere without actually being there,"
+metadata/_edit_use_anchors_ = true
+
+[connection signal="body_entered" from="Area3D" to="." method="_on_area_3d_body_entered"]
+[connection signal="body_exited" from="Area3D" to="." method="_on_area_3d_body_exited"]

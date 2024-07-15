@@ -1,0 +1,32 @@
+[gd_scene load_steps=6 format=3 uid="uid://bn33c3hbh703i"]
+
+[ext_resource type="Texture2D" uid="uid://do6spfblxchdn" path="res://addons/kenney_prototype_textures/purple/texture_02.png" id="1_c3j42"]
+[ext_resource type="PackedScene" uid="uid://dod6t4ob04haf" path="res://assets/player.tscn" id="2_0012m"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_wc5jc"]
+albedo_texture = ExtResource("1_c3j42")
+uv1_triplanar = true
+
+[sub_resource type="BoxMesh" id="BoxMesh_xecpo"]
+material = SubResource("StandardMaterial3D_wc5jc")
+size = Vector3(200, 0.1, 200)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_qg2q8"]
+size = Vector3(200, 0.1, 200)
+
+[node name="main" type="Node3D"]
+
+[node name="Floor" type="StaticBody3D" parent="."]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Floor"]
+mesh = SubResource("BoxMesh_xecpo")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Floor"]
+shape = SubResource("BoxShape3D_qg2q8")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.675075, 0.737749, 0, -0.737749, 0.675075, 0, 3.82692, 4.14569)
+shadow_enabled = true
+
+[node name="Player" parent="." instance=ExtResource("2_0012m")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.19636, 0)

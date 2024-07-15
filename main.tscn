@@ -1,0 +1,176 @@
+[gd_scene load_steps=23 format=3 uid="uid://bn33c3hbh703i"]
+
+[ext_resource type="Texture2D" uid="uid://do6spfblxchdn" path="res://addons/kenney_prototype_textures/purple/texture_02.png" id="1_c3j42"]
+[ext_resource type="PackedScene" uid="uid://dod6t4ob04haf" path="res://assets/player.tscn" id="2_0012m"]
+[ext_resource type="Script" path="res://cameraTrack.gd" id="3_2003u"]
+[ext_resource type="Texture2D" uid="uid://b7mvy2a7tldh3" path="res://addons/kenney_prototype_textures/green/texture_02.png" id="4_iw3lg"]
+[ext_resource type="Texture2D" uid="uid://tmxoc4ag0by1" path="res://addons/kenney_prototype_textures/red/texture_02.png" id="5_lehpn"]
+[ext_resource type="PackedScene" uid="uid://boeuio8pe38v6" path="res://assets/pbl_tex.tscn" id="6_yhchi"]
+[ext_resource type="Script" path="res://addons/virtual_joystick/virtual_joystick_instantiator.gd" id="7_sdir3"]
+[ext_resource type="PackedScene" uid="uid://cirg7rcllbqxt" path="res://assets/vpresence_area.tscn" id="8_76omf"]
+[ext_resource type="PackedScene" uid="uid://bdqkev0hi8ill" path="res://mdls/Lotion Bottle Small.glb" id="8_ncf0v"]
+[ext_resource type="PackedScene" uid="uid://n0u60ly2j6v" path="res://assets/recharge_area.tscn" id="9_yv4ki"]
+[ext_resource type="PackedScene" uid="uid://bxwlris158ol" path="res://mdls/VR Headset.glb" id="10_ujrt2"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_qxrn4"]
+
+[sub_resource type="Sky" id="Sky_4awml"]
+sky_material = SubResource("ProceduralSkyMaterial_qxrn4")
+
+[sub_resource type="Environment" id="Environment_0c2fy"]
+background_mode = 2
+sky = SubResource("Sky_4awml")
+tonemap_mode = 2
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_h8280"]
+albedo_texture = ExtResource("1_c3j42")
+uv1_triplanar = true
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_54hq1"]
+albedo_texture = ExtResource("4_iw3lg")
+uv1_triplanar = true
+
+[sub_resource type="PrismMesh" id="PrismMesh_k25m4"]
+material = SubResource("StandardMaterial3D_54hq1")
+left_to_right = 0.0
+size = Vector3(5, 3, 10)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_n1k8h"]
+albedo_texture = ExtResource("4_iw3lg")
+uv1_triplanar = true
+
+[sub_resource type="BoxMesh" id="BoxMesh_oq6h2"]
+material = SubResource("StandardMaterial3D_n1k8h")
+size = Vector3(3, 0.5, 3)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_th33d"]
+size = Vector3(3, 0.5, 3)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_b0x06"]
+albedo_texture = ExtResource("5_lehpn")
+uv1_triplanar = true
+
+[sub_resource type="BoxMesh" id="BoxMesh_8xjw6"]
+material = SubResource("StandardMaterial3D_b0x06")
+size = Vector3(10, 0.5, 3)
+
+[node name="main" type="Node3D"]
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.141333, 0.730343, -0.668299, 0, 0.675075, 0.737749, 0.989962, 0.104268, -0.0954105, 0, 3.82692, 4.14569)
+shadow_enabled = true
+
+[node name="Player" parent="." instance=ExtResource("2_0012m")]
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.910005, 0.414598, 0, -0.414598, 0.910005, 0, 4.92465, 7.0488)
+size = 18.9
+near = 0.001
+script = ExtResource("3_2003u")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_0c2fy")
+
+[node name="CSGCombiner3D" type="CSGCombiner3D" parent="."]
+use_collision = true
+
+[node name="CSGBox3D" type="CSGBox3D" parent="CSGCombiner3D"]
+size = Vector3(200, 0.1, 200)
+material = SubResource("StandardMaterial3D_h8280")
+
+[node name="CSGMesh3D" type="CSGMesh3D" parent="CSGCombiner3D"]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 9.1388, 0.754326, 0)
+mesh = SubResource("PrismMesh_k25m4")
+
+[node name="plat1" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.61754, 2.07655, -6.22253)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="plat1"]
+mesh = SubResource("BoxMesh_oq6h2")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="plat1"]
+shape = SubResource("BoxShape3D_th33d")
+
+[node name="plat2" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10.216, 2.70115, -7.71789)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="plat2"]
+mesh = SubResource("BoxMesh_oq6h2")
+skeleton = NodePath("../../plat2")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="plat2"]
+shape = SubResource("BoxShape3D_th33d")
+
+[node name="plat3" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.71395, 3.95781, -12.747)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="plat3"]
+mesh = SubResource("BoxMesh_oq6h2")
+skeleton = NodePath("../../plat3")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="plat3"]
+shape = SubResource("BoxShape3D_th33d")
+
+[node name="plat4" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11.6277, 4.74767, -15.3152)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="plat4"]
+mesh = SubResource("BoxMesh_oq6h2")
+skeleton = NodePath("../../plat4")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="plat4"]
+shape = SubResource("BoxShape3D_th33d")
+
+[node name="endplat" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.17184, 5.0489, -19.1586)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="endplat"]
+mesh = SubResource("BoxMesh_8xjw6")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="endplat"]
+shape = SubResource("BoxShape3D_th33d")
+
+[node name="PBL-tex" parent="." instance=ExtResource("6_yhchi")]
+transform = Transform3D(2.90377, 0, 2.23613, 0, 3.66499, 0, -2.23613, 0, 2.90377, -12.3788, 0, -7.34923)
+
+[node name="Virtual Joystick" type="Control" parent="."]
+visible = false
+layout_mode = 3
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -40.0
+offset_right = 40.0
+grow_vertical = 0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+script = ExtResource("7_sdir3")
+
+[node name="Jump" type="Button" parent="."]
+visible = false
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -252.0
+offset_top = -222.0
+offset_right = -70.0
+offset_bottom = -75.0
+grow_horizontal = 0
+grow_vertical = 0
+text = "JUMP"
+
+[node name="bottle" parent="." instance=ExtResource("8_ncf0v")]
+transform = Transform3D(0.14, 0, 0, 0, 0.14, 0, 0, 0, 0.14, -13.0946, 1.94501, -13.096)
+
+[node name="recharge-area" parent="bottle" instance=ExtResource("9_yv4ki")]
+transform = Transform3D(7.14286, 0, 0, 0, 7.14286, 0, 0, 0, 7.14286, 1.07363, -4.79228, 0.272133)
+
+[node name="VR Headset" parent="." instance=ExtResource("10_ujrt2")]
+transform = Transform3D(1.90496, 0, -1.84218, 0, 2.65, 0, 1.84218, 0, 1.90496, -19.0189, 0.262664, -8.5364)
+
+[node name="Vpresence-area" parent="VR Headset" instance=ExtResource("8_76omf")]
+transform = Transform3D(0.271266, 0, 0.262325, 0, 0.377358, 0, -0.262325, 0, 0.271266, 0.46226, 0.468934, -0.349724)
+
+[connection signal="pressed" from="Jump" to="Player" method="_on_jump_pressed"]
